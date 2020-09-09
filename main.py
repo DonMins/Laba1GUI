@@ -137,8 +137,18 @@ class Window(QMainWindow):
             if self.Fig == 'circle':
                 painter = QPainter(self.image)
                 painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
-                painter.drawEllipse(self.lastPoint, 10, 10)
-
+                painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+                painter.drawEllipse(self.firstPoint.x(), self.firstPoint.y(),
+                                 (self.lastPoint.y() - self.firstPoint.y()),
+                                 (self.lastPoint.y() - self.firstPoint.y()))
+                self.update()
+            if self.Fig == 'rectangle':
+                painter = QPainter(self.image)
+                painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
+                painter.drawRect(self.firstPoint.x(), self.firstPoint.y(),
+                                 (self.lastPoint.y() - self.firstPoint.y()),
+                                 (self.lastPoint.y() -self.firstPoint.y()))
+                self.update()
 
     def paintEvent(self, event):
         canvasPainter  = QPainter(self)
