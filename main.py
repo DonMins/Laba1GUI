@@ -15,14 +15,13 @@ class Window(QMainWindow):
     def __init__(self):
         super().__init__()
 
-
         title = "Приложенька рисовалка"
 
         icon = "cat.jpg"
 
         self.setWindowTitle(title)
         self.setGeometry(top, left, width, height)
-        self.setFixedSize(width,height)
+        self.setFixedSize(width, height)
         self.setWindowIcon(QIcon(icon))
 
         self.image = QImage(self.size(), QImage.Format_RGB32)
@@ -47,7 +46,7 @@ class Window(QMainWindow):
         fileMenu.addAction(loadAction)
         loadAction.triggered.connect(self.loadFile)
 
-        saveAction = QAction("Сохранить",self)
+        saveAction = QAction("Сохранить", self)
         saveAction.setShortcut("Ctrl+S")
         fileMenu.addAction(saveAction)
         saveAction.triggered.connect(self.save)
@@ -81,11 +80,9 @@ class Window(QMainWindow):
         brushColor.addAction(blackAction)
         blackAction.triggered.connect(self.blackColor)
 
-
         whitekAction = QAction("Белый", self)
         brushColor.addAction(whitekAction)
         whitekAction.triggered.connect(self.whiteColor)
-
 
         redAction = QAction("Красный", self)
         brushColor.addAction(redAction)
@@ -111,17 +108,17 @@ class Window(QMainWindow):
         brushFig.addAction(cirAction)
         cirAction.triggered.connect(self.circlePaint)
 
-
     def mousePressEvent(self, event):
         if event.button() == Qt.LeftButton:
             self.drawing = True
             self.lastPoint = event.pos()
             self.firstPoint = event.pos()
             self.countFig += 1
-            f.write("Фигура " + str(self.countFig) + " : ( " + str(self.lastPoint.x()) + " ; " + str(self.lastPoint.y()) + " ) \n")
+            f.write("Фигура " + str(self.countFig) + " : ( " + str(self.lastPoint.x()) + " ; " + str(
+                self.lastPoint.y()) + " ) \n")
 
     def mouseMoveEvent(self, event):
-        if(event.buttons() & Qt.LeftButton) & self.drawing:
+        if (event.buttons() & Qt.LeftButton) & self.drawing:
             painter = QPainter(self.image)
             painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
             if self.Fig == 'pen':
@@ -129,7 +126,6 @@ class Window(QMainWindow):
 
             self.lastPoint = event.pos()
             self.update()
-
 
     def mouseReleaseEvent(self, event):
         if event.button() == Qt.LeftButton:
@@ -139,32 +135,32 @@ class Window(QMainWindow):
                 painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
                 painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
                 painter.drawEllipse(self.firstPoint.x(), self.firstPoint.y(),
-                                 (self.lastPoint.y() - self.firstPoint.y()),
-                                 (self.lastPoint.y() - self.firstPoint.y()))
+                                    (self.lastPoint.y() - self.firstPoint.y()),
+                                    (self.lastPoint.y() - self.firstPoint.y()))
                 self.update()
             if self.Fig == 'rectangle':
                 painter = QPainter(self.image)
                 painter.setPen(QPen(self.brushColor, self.brushSize, Qt.SolidLine, Qt.RoundCap, Qt.RoundJoin))
                 painter.drawRect(self.firstPoint.x(), self.firstPoint.y(),
                                  (self.lastPoint.y() - self.firstPoint.y()),
-                                 (self.lastPoint.y() -self.firstPoint.y()))
+                                 (self.lastPoint.y() - self.firstPoint.y()))
                 self.update()
 
     def paintEvent(self, event):
-        canvasPainter  = QPainter(self)
-        canvasPainter.drawImage(self.rect(),self.image, self.image.rect() )
+        canvasPainter = QPainter(self)
+        canvasPainter.drawImage(self.rect(), self.image, self.image.rect())
 
     def loadFile(self):
         filename = QFileDialog.getOpenFileName(self, 'Open File', '.')
         self.image = QImage(filename[0]).scaled(width, height, Qt.IgnoreAspectRatio)
 
     def save(self):
-        filePath, _ = QFileDialog.getSaveFileName(self, "Save Image", "", "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
+        filePath, _ = QFileDialog.getSaveFileName(self, "Save Image", "",
+                                                  "PNG(*.png);;JPEG(*.jpg *.jpeg);;All Files(*.*) ")
 
         if filePath == "":
             return
         self.image.save(filePath)
-
 
     def clear(self):
         self.image.fill(Qt.black)
@@ -190,7 +186,6 @@ class Window(QMainWindow):
 
     def ninePixel(self):
         self.brushSize = 9
-
 
     def blackColor(self):
         self.brushColor = Qt.black
